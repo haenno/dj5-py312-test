@@ -1,4 +1,10 @@
-version: "3.8"
+version: "3.7"
+
+x-logging: &loki-logging
+  driver: json-file
+  options:
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
 services:
 
   app:
@@ -22,3 +28,20 @@ services:
       - "7654:7654"
     volumes:
       - ./:/usr/src/app
+    labels:
+      - traefik.http.routers.app.rule=Host(`app.${ENV_APP_DOCKER_DOMAIN}`)
+      - traefik.http.routers.app.service=app
+      # - traefik.http.routers.app.middlewares=auth
+      - traefik.http.services.app.loadbalancer.server.port=7654
+      - traefik.http.routers.app.entrypoints=https
+      - traefik.http.routers.app.tls=true
+      - traefik.http.routers.app.tls.certresolver=${ENV_APP_DOCKER_CERT_RESOLVER}
+    networks:
+      - internalnetwork
+    restart: always
+    logging: *loki-logging
+
+networks:
+  internalnetwork:
+    name: internalnetwork
+    external: true
