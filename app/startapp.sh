@@ -11,4 +11,4 @@ python3 manage.py createsuperuser \
     --username $DJANGO_SUPERUSER_USERNAME \
     --email $DJANGO_SUPERUSER_EMAIL
 echo 'Starting app in production mode (Daphne):'
-exec daphne -b 0.0.0.0 -p 7654 app.asgi:application
+exec daphne -b 0.0.0.0 -p 7654 dj5py312project.asgi:application
