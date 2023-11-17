@@ -1,5 +1,7 @@
 # project setup documentation
 
+## django basic setup
+
 - create conda environment:
   - ``conda create -n dj5py312 python=3.12``
 
@@ -29,3 +31,8 @@
   ```bash
   python manage.py migrate
   ```
+
+## docker setup
+
+- target image to use is ``3.12-slim-bookworm``
+- ...

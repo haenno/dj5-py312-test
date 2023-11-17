@@ -10,22 +10,41 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
+
+import os  # for staticfiles
+from datetime import timedelta
 from pathlib import Path
+
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Take environment variables from .env file
+ENV_FILE = os.path.join(BASE_DIR.parent, ".env")
+environ.Env.read_env(ENV_FILE)
+
+env = environ.Env(
+    ENV_APP_SECRET_KEY=(
+        str,
+        "django-insecure-hybs=%*%37iv!3is_7*0ub1$a0vb+o%pmhvu^=r+w7)88^^!vh",
+    ),
+    ENV_APP_ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1"]),
+    ENV_APP_DEBUG=(bool, True),
+    ENV_APP_CSRF_TRUSTED_ORIGINS=(list, ["http://localhost", "http://127.0.0.1"]),
+)
+
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-%#c#=_q^n4c)8&sytr1*+gy5ky0kqo5+je7b%k!^n&!bs0%u6s"
+SECRET_KEY = env("ENV_APP_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("ENV_APP_DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env("ENV_APP_ALLOWED_HOSTS")
 
 
 # Application definition
@@ -118,7 +137,36 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # for staticfiles
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# CSRF and CORS settings
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+)
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
+
+CORS_ALLOW_PRIVATE_NETWORK = True
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = env("ENV_APP_CSRF_TRUSTED_ORIGINS")

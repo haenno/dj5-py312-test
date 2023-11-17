@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+
+  app:
+    container_name: app
+    hostname: app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        DJANGO_SUPERUSER_PASSWORD: ${ENV_APP_DJANGO_SUPERUSER_PASSWORD}
+        DJANGO_SUPERUSER_USERNAME: ${ENV_APP_DJANGO_SUPERUSER_USERNAME}
+        DJANGO_SUPERUSER_EMAIL: ${ENV_APP_DJANGO_SUPERUSER_EMAIL}
+    env_file:
+      - .env
+    command: bash -c '/srv/app/startapp.sh'
+    environment:
+      DJANGO_SUPERUSER_PASSWORD: ${ENV_APP_DJANGO_SUPERUSER_PASSWORD}
+      DJANGO_SUPERUSER_USERNAME: ${ENV_APP_DJANGO_SUPERUSER_USERNAME}
+      DJANGO_SUPERUSER_EMAIL: ${ENV_APP_DJANGO_SUPERUSER_EMAIL}
+    ports:
+      - "7654:7654"
+    volumes:
+      - ./:/usr/src/app
