@@ -12,7 +12,7 @@
 
   ```bash
   mkdir app
-  django-admin startproject dj5py312project app
+  django-admin startproject project app
   cd app
   python manage.py startapp api
   ```
