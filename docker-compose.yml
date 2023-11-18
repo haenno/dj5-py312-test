@@ -28,6 +28,7 @@ services:
       - "7654:7654"
     volumes:
       - ./:/usr/src/app
+      - ./data:/srv/app/data
     labels:
       - traefik.http.routers.app.rule=Host(`app.${ENV_APP_DOCKER_DOMAIN}`)
       - traefik.http.routers.app.service=app
