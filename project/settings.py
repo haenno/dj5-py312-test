@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "api",
-    "imap-interface",
+    "imap_interface",
 ]
 
 MIDDLEWARE = [
